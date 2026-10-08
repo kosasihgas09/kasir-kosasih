@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#1d2b64"/>
+  <rect x="96" y="90" width="320" height="332" rx="35" fill="white"/>
+  <rect x="130" y="125" width="252" height="55" rx="12" fill="#2d6cdf"/>
+  <rect x="130" y="205" width="110" height="28" rx="8" fill="#d9dee9"/>
+  <rect x="272" y="205" width="110" height="28" rx="8" fill="#d9dee9"/>
+  <rect x="130" y="255" width="252" height="28" rx="8" fill="#d9dee9"/>
+  <rect x="130" y="305" width="75" height="75" rx="15" fill="#2d6cdf"/>
+  <text x="256" y="360" text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="54" font-weight="bold"
+        fill="#1d2b64">Rp</text>
+</svg>

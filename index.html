@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kasir Warung PRO</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>🧾 Kasir Warung PRO</h1>
+    <p>Catatan Keuangan & Penjualan</p>
+  </div>
+  <div id="today"></div>
+</header>
+
+<div class="container">
+
+<nav id="tabs">
+  <button data-tab="dashboard">Dashboard</button>
+  <button data-tab="sales">Transaksi</button>
+  <button data-tab="products">Stok Barang</button>
+  <button data-tab="capital">Modal</button>
+  <button data-tab="expenses">Pengeluaran</button>
+  <button data-tab="reports">Laporan</button>
+  <button data-tab="settings">Pengaturan</button>
+</nav>
+
+<section id="dashboard" class="panel active">
+
+  <div class="dashboard-header">
+    <div>
+      <h2>Dashboard</h2>
+      <p>Ringkasan kondisi usaha Anda hari ini.</p>
+    </div>
+  </div>
+
+  <div id="metrics" class="dashboard"></div>
+
+  <div class="dashboard-section">
+    <div class="section-title">
+      <div>
+        <h3>📊 Ringkasan Hari Ini</h3>
+        <p>Lihat kondisi penjualan dan keuntungan hari ini.</p>
+      </div>
+    </div>
+
+    <div id="todaySummary"></div>
+
+    <button class="dashboard-action" onclick="showTab('sales')">
+      ➕ Buat Transaksi Baru
+    </button>
+  </div>
+
+  <div class="dashboard-section">
+    <div class="section-title">
+      <div>
+        <h3>🧾 Transaksi Terbaru</h3>
+        <p>Daftar transaksi yang baru saja dilakukan.</p>
+      </div>
+    </div>
+
+    <div id="recent"></div>
+  </div>
+
+</section>
+
+<section id="sales" class="panel hidden">
+  <div class="card">
+    <h2>Transaksi Penjualan</h2>
+
+    <label>Nama Kasir</label>
+    <input id="cashier" placeholder="Nama kasir">
+
+    <label>Nama Pelanggan</label>
+    <input id="customer" placeholder="Pelanggan umum">
+
+    <label>Metode Pembayaran</label>
+    <select id="payMethod">
+      <option>Tunai</option>
+      <option>QRIS</option>
+      <option>Transfer</option>
+      <option>Debit</option>
+      <option>Piutang</option>
+    </select>
+
+    <label>Pilih Barang</label>
+    <select id="saleProduct"></select>
+
+    <label>Jumlah</label>
+    <input id="saleQty" type="number" value="1">
+
+    <button onclick="addCart()">Tambah Barang</button>
+
+    <div id="cartView"></div>
+
+    <label>Diskon</label>
+    <input id="discount" type="number" value="0">
+
+    <label>Uang Diterima</label>
+    <input id="received" type="number" value="0">
+
+    <div id="saleTotal" class="total">Total: Rp0</div>
+    <div id="change">Kembalian: Rp0</div>
+
+    <button onclick="completeSale()">Simpan & Cetak Struk</button>
+    <button onclick="clearCart()">Kosongkan</button>
+  </div>
+
+  <div class="card">
+    <h3>Riwayat Transaksi</h3>
+    <input id="salesDate" type="date" onchange="renderSales()">
+    <div id="salesTable"></div>
+  </div>
+</section>
+
+<section id="products" class="panel hidden">
+  <div class="card">
+    <h2>Manajemen Stok Barang</h2>
+
+    <input id="prodId" type="hidden">
+
+    <label>Nama Barang</label>
+    <input id="prodName">
+
+    <label>Kode Barang</label>
+    <input id="prodSku">
+
+    <label>Harga Modal</label>
+    <input id="prodCost" type="number">
+
+    <label>Harga Jual</label>
+<input id="prodPrice" type="text" inputmode="numeric" placeholder="Contoh: 10000">
+
+    <label>Stok</label>
+    <input id="prodStock" type="number">
+
+    <label>Stok Minimum</label>
+    <input id="prodMin" type="number" value="3">
+
+    <button onclick="saveProduct()">Simpan Barang</button>
+    <button onclick="resetProduct()">Bersihkan</button>
+  </div>
+
+  <div class="card">
+    <h3>Daftar Barang</h3>
+    <div id="productTable"></div>
+  </div>
+</section>
+
+<section id="capital" class="panel hidden">
+  <div class="card">
+    <h2>Catatan Modal</h2>
+
+    <label>Tanggal</label>
+    <input id="capDate" type="date">
+
+    <label>Jenis Modal</label>
+    <select id="capType">
+      <option>Modal awal</option>
+      <option>Tambahan modal</option>
+      <option>Kas masuk lain</option>
+      <option>Setoran pemilik</option>
+    </select>
+
+    <label>Nominal</label>
+    <input id="capAmount" type="number">
+
+    <label>Keterangan</label>
+    <input id="capNote">
+
+    <button onclick="saveCapital()">Simpan Modal</button>
+  </div>
+
+  <div class="card">
+    <h3>Riwayat Modal</h3>
+    <div id="capitalTable"></div>
+  </div>
+</section>
+
+<section id="expenses" class="panel hidden">
+  <div class="card">
+    <h2>Catatan Pengeluaran</h2>
+
+    <label>Tanggal</label>
+    <input id="expDate" type="date">
+
+    <label>Kategori</label>
+    <select id="expCategory">
+      <option>Belanja stok</option>
+      <option>Operasional</option>
+      <option>Listrik / air</option>
+      <option>Transportasi</option>
+      <option>Gaji</option>
+      <option>Peralatan</option>
+      <option>Lainnya</option>
+    </select>
+
+    <label>Nominal</label>
+    <input id="expAmount" type="number">
+
+    <label>Metode</label>
+    <select id="expMethod">
+      <option>Tunai</option>
+      <option>Transfer</option>
+      <option>QRIS</option>
+    </select>
+
+    <label>Keterangan</label>
+    <input id="expNote">
+
+    <button onclick="saveExpense()">Simpan Pengeluaran</button>
+  </div>
+
+  <div class="card">
+    <h3>Riwayat Pengeluaran</h3>
+    <div id="expenseTable"></div>
+  </div>
+</section>
+
+<section id="reports" class="panel hidden">
+  <div class="card">
+    <h2>Laporan Keuangan</h2>
+
+    <label>Dari Tanggal</label>
+    <input id="fromDate" type="date">
+
+    <label>Sampai Tanggal</label>
+    <input id="toDate" type="date">
+
+    <button onclick="renderReport()">Tampilkan Laporan</button>
+    <button onclick="window.print()">Cetak Laporan</button>
+    <button onclick="exportCSV()">Ekspor CSV</button>
+
+    <div id="reportView"></div>
+  </div>
+</section>
+
+<section id="settings" class="panel hidden">
+  <div class="card">
+    <h2>Pengaturan Toko</h2>
+
+    <label>Nama Toko</label>
+    <input id="shopName">
+
+    <label>Alamat Toko</label>
+    <input id="shopAddress">
+
+    <button onclick="saveSettings()">Simpan Pengaturan</button>
+    <button onclick="backup()">Cadangkan Data</button>
+
+    <label>Pulihkan Cadangan JSON</label>
+    <input type="file" accept=".json" onchange="restore(event)">
+
+    <button onclick="clearAll()">Hapus Semua Data</button>
+  </div>
+</section>
+
+</div>
+
+<script src="script.js"></script>
+<script src="printer.js"></script>
+
+</body>
+</html>	
