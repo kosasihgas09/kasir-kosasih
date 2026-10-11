@@ -1,4 +1,4 @@
-const CACHE_NAME = "kasir-warung-pro-v1";
+const CACHE_NAME = "kasir-warung-pro-v2";
 
 const FILES_TO_CACHE = [
   "./",
@@ -7,7 +7,8 @@ const FILES_TO_CACHE = [
   "./script.js",
   "./printer.js",
   "./manifest.json",
-  "./icon.svg"
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {
