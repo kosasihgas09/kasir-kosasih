@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Kasir Warung Kosasih Gaskeun</title>
+<title>Kasir Warung Pro</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#111827">
@@ -105,10 +105,10 @@
     <div id="cartView"></div>
 
     <label>Diskon</label>
-    <input id="discount" type="number" value="0">
+<input id="discount" type="text" inputmode="numeric" placeholder="Contoh: 10000">
 
     <label>Uang Diterima</label>
-    <input id="received" type="number" value="0">
+<input id="received" type="text" inputmode="numeric" value="0">
 
     <div id="saleTotal" class="total">Total: Rp0</div>
     <div id="change">Kembalian: Rp0</div>
@@ -137,9 +137,8 @@
     <input id="prodSku">
 
     <label>Harga Modal</label>
-    <input id="prodCost" type="number">
-
-    <label>Harga Jual</label>
+<input id="prodCost" type="text" inputmode="numeric" placeholder="Contoh: 10000">
+<label>Harga Jual</label>
 <input id="prodPrice" type="text" inputmode="numeric" placeholder="Contoh: 10000">
 
     <label>Stok</label>
@@ -174,7 +173,7 @@
     </select>
 
     <label>Nominal</label>
-    <input id="capAmount" type="number">
+<input id="capAmount" type="text" inputmode="numeric" placeholder="Contoh: 50000">
 
     <label>Keterangan</label>
     <input id="capNote">
@@ -207,7 +206,7 @@
     </select>
 
     <label>Nominal</label>
-    <input id="expAmount" type="number">
+<input id="expAmount" type="text" inputmode="numeric" placeholder="Contoh: 50000">
 
     <label>Metode</label>
     <select id="expMethod">

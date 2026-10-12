@@ -6,6 +6,32 @@
 
 const $ = id => document.getElementById(id);
 
+// Format nominal uang dengan titik ribuan
+function formatRibuan(value) {
+  const angka = String(value ?? '').replace(/\D/g, '');
+  return angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+// Baca nominal sebagai angka biasa untuk perhitungan
+function nilaiNominal(id) {
+  return Number($(id).value.replace(/\D/g, '')) || 0;
+}
+
+// Format otomatis saat mengetik
+[
+  'prodCost',
+  'prodPrice',
+  'discount',
+  'received',
+  'capAmount',
+  'expAmount'
+].forEach(id => {
+  $(id).addEventListener('input', event => {
+    const input = event.target;
+    input.value = formatRibuan(input.value);
+  });
+});
+
 const rupiah = angka =>
   'Rp' + Number(angka || 0).toLocaleString('id-ID');
 
@@ -142,8 +168,8 @@ function saveProduct() {
     id: $('prodId').value || buatID(),
     name,
     sku: $('prodSku').value.trim(),
-    cost: +$('prodCost').value || 0,
-    price: Number($('prodPrice').value.replace(/\D/g, '')) || 0,    stock: Math.max(0, +$('prodStock').value || 0),
+    cost: nilaiNominal('prodCost'),
+    price: nilaiNominal('prodPrice'),
     min: Math.max(0, +$('prodMin').value || 0)
   };
 
@@ -166,8 +192,8 @@ function editProduct(id) {
   $('prodId').value = p.id;
   $('prodName').value = p.name;
   $('prodSku').value = p.sku;
-  $('prodCost').value = p.cost;
-  $('prodPrice').value = p.price;
+  $('prodCost').value = formatRibuan(p.cost);
+  $('prodPrice').value = formatRibuan(p.price);
   $('prodStock').value = p.stock;
   $('prodMin').value = p.min;
 
@@ -226,7 +252,7 @@ function cartTotal() {
 
   return Math.max(
     0,
-    subtotal - (+$('discount').value || 0)
+   subtotal - nilaiNominal('discount')
   );
 }
 
@@ -251,7 +277,7 @@ function renderCart() {
 
   $('change').textContent =
     'Kembalian: ' +
-    rupiah(Math.max(0, (+$('received').value || 0) - cartTotal()));
+      rupiah(Math.max(0, nilaiNominal('received') - cartTotal()));
 }
 
 $('discount').addEventListener('input', renderCart);
@@ -273,7 +299,7 @@ function completeSale() {
 
   const total = cartTotal();
   const method = $('payMethod').value;
-  const received = +$('received').value || 0;
+  const received = nilaiNominal('received');
 
   if (method === 'Tunai' && received < total) {
     return alert('Uang diterima kurang.');
@@ -295,7 +321,7 @@ function completeSale() {
     customer: $('customer').value || 'Umum',
     method,
     items: cart.map(x => ({ ...x })),
-    discount: +$('discount').value || 0,
+    discount: nilaiNominal('discount'),
     total,
     cost: cart.reduce(
       (sum, x) => sum + x.cost * x.qty,
@@ -552,7 +578,7 @@ function renderSales() {
 // =======================
 
 function saveCapital() {
-  const amount = +$('capAmount').value;
+const amount = nilaiNominal('capAmount');
 
   if (amount <= 0) return alert('Nominal harus lebih dari 0.');
 
@@ -575,7 +601,7 @@ function saveCapital() {
 // =======================
 
 function saveExpense() {
-  const amount = +$('expAmount').value;
+const amount = nilaiNominal('expAmount');
 
   if (amount <= 0) return alert('Nominal harus lebih dari 0.');
 
